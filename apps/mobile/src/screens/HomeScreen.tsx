@@ -25,6 +25,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 }) => {
   const { currentStudent, schedules, notifications, mySubmissions } = useStudentData();
 
+  if (!currentStudent) return null;
+
   // Find next class for this student
   const nextClass = schedules.find(
     (s) => s.batch_name === currentStudent.batch_name || s.instrument === currentStudent.instrument

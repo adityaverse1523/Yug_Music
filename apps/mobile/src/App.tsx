@@ -9,12 +9,37 @@ import { RiyaazScreen } from './screens/RiyaazScreen';
 import { LibraryScreen } from './screens/LibraryScreen';
 import { ProfileScreen } from './screens/ProfileScreen';
 import { NotificationsScreen } from './screens/NotificationsScreen';
+import { AuthScreen } from './screens/AuthScreen';
+import { ApplicationUnderReviewScreen } from './screens/ApplicationUnderReviewScreen';
 
 const StudentAppLayout: React.FC = () => {
+  const { currentStudent, notifications, readNotifs } = useStudentData();
   const [activeTab, setActiveTab] = useState<MobileTab>('home');
   const [isNotifScreenOpen, setIsNotifScreenOpen] = useState(false);
 
-  const { notifications, readNotifs } = useStudentData();
+  // 1. Not Logged In ➔ Show Login / Admission Apply Screen
+  if (!currentStudent) {
+    return (
+      <MobileContainer>
+        <AuthScreen />
+      </MobileContainer>
+    );
+  }
+
+  // 2. Application Pending Review ➔ Show Under Review Screen
+  const isPendingApproval =
+    currentStudent.status === 'pending' ||
+    (currentStudent.status === 'inactive' && Boolean(currentStudent.notes?.includes('[APPLICATION')));
+
+  if (isPendingApproval) {
+    return (
+      <MobileContainer>
+        <ApplicationUnderReviewScreen />
+      </MobileContainer>
+    );
+  }
+
+  // 3. Active Enrolled Student ➔ Show Full Academy Portal
   const unreadCount = notifications.filter((n) => !readNotifs.has(n.id)).length;
 
   return (
@@ -62,4 +87,3 @@ export const App: React.FC = () => {
 };
 
 export default App;
-

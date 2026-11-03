@@ -30,20 +30,22 @@ export const TopBar: React.FC<TopBarProps> = ({ onOpenNotifications, unreadCount
       {/* Student Switcher & Notification Bell */}
       <div className="flex items-center gap-2.5">
         {/* Switch Student selector for demo */}
-        <div className="relative">
-          <select
-            value={currentStudent.id}
-            onChange={(e) => switchStudent(e.target.value)}
-            className="text-[11px] font-bold bg-soft text-ink border border-line rounded-full pl-2.5 pr-6 py-1 appearance-none focus:outline-none focus:border-gold cursor-pointer"
-          >
-            {DEMO_STUDENTS.map((s) => (
-              <option key={s.id} value={s.id}>
-                {s.name} ({s.instrument})
-              </option>
-            ))}
-          </select>
-          <ChevronDown className="w-3 h-3 text-muted absolute right-2 top-2 pointer-events-none" />
-        </div>
+        {currentStudent && (
+          <div className="relative">
+            <select
+              value={currentStudent.id}
+              onChange={(e) => switchStudent(e.target.value)}
+              className="text-[11px] font-bold bg-soft text-ink border border-line rounded-full pl-2.5 pr-6 py-1 appearance-none focus:outline-none focus:border-gold cursor-pointer"
+            >
+              {DEMO_STUDENTS.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.name} ({s.instrument})
+                </option>
+              ))}
+            </select>
+            <ChevronDown className="w-3 h-3 text-muted absolute right-2 top-2 pointer-events-none" />
+          </div>
+        )}
 
         {/* Notification Bell */}
         <button

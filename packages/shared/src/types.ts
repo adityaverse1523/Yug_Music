@@ -15,6 +15,8 @@ export type SkillLevel = 'Beginner' | 'Intermediate' | 'Advanced';
 
 export type FeeStatus = 'paid' | 'pending' | 'overdue';
 
+export type StudentStatus = 'active' | 'inactive' | 'pending' | 'rejected';
+
 export interface Student {
   id: string;
   name: string;
@@ -24,7 +26,7 @@ export interface Student {
   skill_level: SkillLevel;
   batch_name: string;
   join_date: string;
-  status: 'active' | 'inactive';
+  status: StudentStatus;
   fee_status: FeeStatus;
   avatar_url?: string;
   notes?: string;

@@ -20,12 +20,14 @@ export const LibraryScreen: React.FC = () => {
 
   // Find subject corresponding to student's current instrument
   const defaultSubject =
-    ACADEMY_SUBJECTS.find((s) => s.instrument === currentStudent.instrument)?.id || 'guitar';
+    ACADEMY_SUBJECTS.find((s) => s.instrument === currentStudent?.instrument)?.id || 'guitar';
 
   const [selectedSubjectId, setSelectedSubjectId] = useState<string>(defaultSubject);
   const [selectedFormat, setSelectedFormat] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [collapsedCategories, setCollapsedCategories] = useState<Record<string, boolean>>({});
+
+  if (!currentStudent) return null;
 
   const currentSubjectObj = ACADEMY_SUBJECTS.find((s) => s.id === selectedSubjectId);
 

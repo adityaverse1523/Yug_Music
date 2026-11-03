@@ -28,7 +28,7 @@ create table if not exists public.students (
   skill_level text not null check (skill_level in ('Beginner', 'Intermediate', 'Advanced')) default 'Beginner',
   batch_name text not null,
   join_date date default current_date not null,
-  status text not null check (status in ('active', 'inactive')) default 'active',
+  status text not null check (status in ('active', 'inactive', 'pending', 'rejected')) default 'active',
   fee_status text not null check (fee_status in ('paid', 'pending', 'overdue')) default 'paid',
   avatar_url text,
   notes text,

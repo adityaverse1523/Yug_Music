@@ -110,6 +110,8 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onSubmitted }) => 
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
+  if (!currentStudent) return null;
+
   return (
     <div className="bg-paper border border-line rounded-2xl p-5 shadow-xs">
       <div className="text-center space-y-1 mb-4">

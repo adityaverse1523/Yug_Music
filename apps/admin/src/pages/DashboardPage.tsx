@@ -12,6 +12,7 @@ import {
   CheckCircle,
   UserPlus,
   FolderPlus,
+  Sparkles,
 } from 'lucide-react';
 import { useAppData } from '../context/AppDataContext';
 import { AdminTab } from '../components/layout/Sidebar';
@@ -34,7 +35,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const { students, schedules, notifications, submissions, materials } = useAppData();
 
   const pendingSubmissions = submissions.filter((s) => s.status === 'pending');
-  const activeStudents = students.filter((s) => s.status === 'active');
+  const pendingApplications = students.filter(
+    (s) => s.status === 'pending' || (s.status === 'inactive' && Boolean(s.notes?.includes('[APPLICATION')))
+  );
+  const activeStudents = students.filter(
+    (s) => s.status === 'active' || (!s.status && !s.notes?.includes('[APPLICATION'))
+  );
 
   const statCards = [
     {
@@ -123,6 +129,31 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           </button>
         </div>
       </div>
+
+      {/* Pending Admission Applications Banner */}
+      {pendingApplications.length > 0 && (
+        <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs animate-in fade-in">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center font-bold shrink-0 animate-pulse">
+              <Sparkles className="w-5 h-5" />
+            </div>
+            <div>
+              <h4 className="font-extrabold text-sm text-amber-900">
+                {pendingApplications.length} New Admission Application{pendingApplications.length > 1 ? 's' : ''} Received!
+              </h4>
+              <p className="text-xs text-amber-700">
+                Prospective student{pendingApplications.length > 1 ? 's have' : ' has'} applied via the mobile app and {pendingApplications.length > 1 ? 'are' : 'is'} awaiting your review.
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => onNavigate('students')}
+            className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer shadow-xs self-start sm:self-auto"
+          >
+            Review &amp; Enroll →
+          </button>
+        </div>
+      )}
 
       {/* Overview Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

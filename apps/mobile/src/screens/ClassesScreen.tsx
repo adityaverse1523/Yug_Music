@@ -6,6 +6,8 @@ export const ClassesScreen: React.FC = () => {
   const { currentStudent, schedules } = useStudentData();
   const [copiedId, setCopiedId] = React.useState<string | null>(null);
 
+  if (!currentStudent) return null;
+
   const handleCopyLink = (id: string, link?: string) => {
     if (!link) return;
     navigator.clipboard.writeText(link);

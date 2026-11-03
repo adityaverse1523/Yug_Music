@@ -1,9 +1,11 @@
 import React from 'react';
-import { User, CheckCircle2, Clock, Mail, Phone, Calendar, Award, ShieldCheck } from 'lucide-react';
+import { User, CheckCircle2, Clock, Mail, Phone, Calendar, Award, ShieldCheck, LogOut } from 'lucide-react';
 import { useStudentData } from '../context/StudentContext';
 
 export const ProfileScreen: React.FC = () => {
-  const { currentStudent, myAttendance } = useStudentData();
+  const { currentStudent, myAttendance, logout } = useStudentData();
+
+  if (!currentStudent) return null;
 
   const totalClasses = myAttendance.length;
   const presentCount = myAttendance.filter((a) => a.status === 'present').length;
@@ -30,7 +32,7 @@ export const ProfileScreen: React.FC = () => {
         <div className="pt-2 flex items-center justify-center gap-2">
           <span className="text-[10px] font-bold px-3 py-1 rounded-full bg-[#eef3eb] text-accentgreen border border-[#d3e2cd] flex items-center gap-1">
             <CheckCircle2 className="w-3 h-3" />
-            <span>Fee Status: Paid</span>
+            <span>Fee Status: {currentStudent.fee_status.toUpperCase()}</span>
           </span>
 
           <span className="text-[10px] font-bold px-3 py-1 rounded-full bg-soft text-gold-dark border border-line flex items-center gap-1">
@@ -96,7 +98,18 @@ export const ProfileScreen: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Sign Out / Switch Account */}
+      <div className="pt-2">
+        <button
+          type="button"
+          onClick={logout}
+          className="w-full py-2.5 bg-paper hover:bg-red-50 border border-line hover:border-red-200 rounded-xl text-xs font-bold text-red-600 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-2xs"
+        >
+          <LogOut className="w-4 h-4" />
+          <span>Sign Out / Switch Student</span>
+        </button>
+      </div>
     </div>
   );
 };
-

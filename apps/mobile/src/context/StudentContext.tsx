@@ -7,10 +7,12 @@ import {
   PracticeSubmission,
   AttendanceRecord,
   DEFAULT_STUDY_MATERIALS,
+  InstrumentType,
+  SkillLevel,
 } from '@yug/shared';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
-// Pre-seeded Demo Students
+// Pre-seeded Demo Students for fallback & offline testing
 export const DEMO_STUDENTS: Student[] = [
   {
     id: '11111111-1111-1111-1111-111111111111',
@@ -38,10 +40,36 @@ export const DEMO_STUDENTS: Student[] = [
     fee_status: 'paid',
     notes: 'Classical Raag Bhairav & breathing control',
   },
+  {
+    id: '33333333-3333-3333-3333-333333333333',
+    name: 'Rohan Mehta',
+    email: 'rohan.piano@example.com',
+    phone: '+91 98765 43212',
+    instrument: 'Piano',
+    skill_level: 'Advanced',
+    batch_name: 'Classical Piano & Keyboard',
+    join_date: '2025-11-10',
+    status: 'active',
+    fee_status: 'paid',
+    notes: 'Prepping for Trinity Grade 5 examination',
+  },
 ];
 
 interface StudentContextType {
-  currentStudent: Student;
+  currentStudent: Student | null;
+  isLoggedIn: boolean;
+  loginWithEmail: (email: string) => Promise<{ success: boolean; message: string; student?: Student }>;
+  applyForAdmission: (applicationData: {
+    name: string;
+    email: string;
+    phone: string;
+    instrument: InstrumentType;
+    batch_name: string;
+    skill_level: SkillLevel;
+    notes?: string;
+  }) => Promise<{ success: boolean; message: string; student?: Student }>;
+  logout: () => void;
+  refreshStudentStatus: () => Promise<void>;
   switchStudent: (studentId: string) => void;
   schedules: ClassSchedule[];
   notifications: AcademyNotification[];
@@ -57,7 +85,19 @@ interface StudentContextType {
 const StudentContext = createContext<StudentContextType | undefined>(undefined);
 
 export const StudentProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [currentStudent, setCurrentStudent] = useState<Student>(DEMO_STUDENTS[0]);
+  // Read stored student or null
+  const [currentStudent, setCurrentStudent] = useState<Student | null>(() => {
+    const saved = localStorage.getItem('yug_current_student');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        return null;
+      }
+    }
+    // Default to Aarav if no prior state, or null if auth-required
+    return DEMO_STUDENTS[0];
+  });
 
   // Read schedules from shared storage or fallback
   const [schedules, setSchedules] = useState<ClassSchedule[]>(() => {
@@ -93,6 +133,15 @@ export const StudentProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [readNotifs, setReadNotifs] = useState<Set<string>>(new Set());
   const [isLiveSupabase, setIsLiveSupabase] = useState(isSupabaseConfigured);
 
+  // Sync currentStudent to localStorage
+  useEffect(() => {
+    if (currentStudent) {
+      localStorage.setItem('yug_current_student', JSON.stringify(currentStudent));
+    } else {
+      localStorage.removeItem('yug_current_student');
+    }
+  }, [currentStudent]);
+
   // Sync to Supabase if configured + Realtime subscriptions
   useEffect(() => {
     const client = supabase;
@@ -125,7 +174,7 @@ export const StudentProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
     // Subscribe to realtime changes from Supabase
     const channel = client
-      .channel('schema-db-changes')
+      .channel('mobile-db-changes')
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'class_schedules' },
@@ -161,6 +210,22 @@ export const StudentProvider: React.FC<{ children: React.ReactNode }> = ({ child
           }
         }
       )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'students' },
+        (payload) => {
+          // Listen for student updates, e.g. Sir approves pending application!
+          if (payload.eventType === 'UPDATE') {
+            const updated = payload.new as Student;
+            setCurrentStudent((curr) => {
+              if (curr && (curr.id === updated.id || curr.email.toLowerCase() === updated.email.toLowerCase())) {
+                return updated;
+              }
+              return curr;
+            });
+          }
+        }
+      )
       .subscribe();
 
     return () => {
@@ -168,7 +233,7 @@ export const StudentProvider: React.FC<{ children: React.ReactNode }> = ({ child
     };
   }, []);
 
-  // Listen to cross-tab storage changes (Admin panel updates sync immediately!)
+  // Listen to cross-tab storage changes (Admin panel updates sync immediately in demo mode!)
   useEffect(() => {
     const handleStorage = (e: StorageEvent) => {
       if (e.key === 'yug_schedules_v1' && e.newValue) setSchedules(JSON.parse(e.newValue));
@@ -176,11 +241,209 @@ export const StudentProvider: React.FC<{ children: React.ReactNode }> = ({ child
       if (e.key === 'yug_materials_v1' && e.newValue) setMaterials(JSON.parse(e.newValue));
       if (e.key === 'yug_submissions_v1' && e.newValue) setAllSubmissions(JSON.parse(e.newValue));
       if (e.key === 'yug_attendance_v1' && e.newValue) setAllAttendance(JSON.parse(e.newValue));
+      if (e.key === 'yug_students_v1' && e.newValue) {
+        try {
+          const allStudents: Student[] = JSON.parse(e.newValue);
+          setCurrentStudent((curr) => {
+            if (!curr) return null;
+            const match = allStudents.find((s) => s.id === curr.id || s.email.toLowerCase() === curr.email.toLowerCase());
+            return match || curr;
+          });
+        } catch {}
+      }
     };
 
     window.addEventListener('storage', handleStorage);
     return () => window.removeEventListener('storage', handleStorage);
   }, []);
+
+  // Refresh student status on demand
+  const refreshStudentStatus = async () => {
+    if (!currentStudent) return;
+    if (isLiveSupabase && supabase) {
+      try {
+        const { data } = await supabase
+          .from('students')
+          .select('*')
+          .or(`id.eq.${currentStudent.id},email.ilike.${currentStudent.email}`)
+          .maybeSingle();
+
+        if (data) {
+          setCurrentStudent(data);
+          return;
+        }
+      } catch (err) {
+        console.error('Failed to refresh student status:', err);
+      }
+    }
+
+    // Local storage fallback
+    const saved = localStorage.getItem('yug_students_v1');
+    if (saved) {
+      try {
+        const list: Student[] = JSON.parse(saved);
+        const match = list.find((s) => s.id === currentStudent.id || s.email.toLowerCase() === currentStudent.email.toLowerCase());
+        if (match) setCurrentStudent(match);
+      } catch {}
+    }
+  };
+
+  // Student Login with Email
+  const loginWithEmail = async (email: string): Promise<{ success: boolean; message: string; student?: Student }> => {
+    const cleanEmail = email.trim().toLowerCase();
+
+    if (isLiveSupabase && supabase) {
+      try {
+        const { data, error } = await supabase
+          .from('students')
+          .select('*')
+          .ilike('email', cleanEmail)
+          .maybeSingle();
+
+        if (error) throw error;
+
+        if (data) {
+          setCurrentStudent(data);
+          return {
+            success: true,
+            message: `Welcome back, ${data.name}!`,
+            student: data,
+          };
+        }
+      } catch (err: any) {
+        console.warn('Supabase login check failed, checking local:', err);
+      }
+    }
+
+    // Check demo and local students
+    const localStudentsJson = localStorage.getItem('yug_students_v1');
+    const localList: Student[] = localStudentsJson ? JSON.parse(localStudentsJson) : DEMO_STUDENTS;
+    const found = localList.find((s) => s.email.toLowerCase() === cleanEmail);
+
+    if (found) {
+      setCurrentStudent(found);
+      return {
+        success: true,
+        message: `Welcome back, ${found.name}!`,
+        student: found,
+      };
+    }
+
+    return {
+      success: false,
+      message: `No student enrolled with email "${email}". Please apply for admission or ask Sir to register your Gmail.`,
+    };
+  };
+
+  // Student Self-Admission / Enrollment Application
+  const applyForAdmission = async (app: {
+    name: string;
+    email: string;
+    phone: string;
+    instrument: InstrumentType;
+    batch_name: string;
+    skill_level: SkillLevel;
+    notes?: string;
+  }): Promise<{ success: boolean; message: string; student?: Student }> => {
+    const cleanEmail = app.email.trim();
+
+    // Check if email already enrolled
+    if (isLiveSupabase && supabase) {
+      try {
+        const { data: existing } = await supabase
+          .from('students')
+          .select('*')
+          .ilike('email', cleanEmail)
+          .maybeSingle();
+
+        if (existing) {
+          if (existing.status === 'active') {
+            setCurrentStudent(existing);
+            return {
+              success: true,
+              message: `You are already enrolled! Logged in as ${existing.name}.`,
+              student: existing,
+            };
+          } else {
+            setCurrentStudent(existing);
+            return {
+              success: true,
+              message: `Your application is already submitted and under review!`,
+              student: existing,
+            };
+          }
+        }
+      } catch (e) {
+        console.warn('Supabase check existing failed:', e);
+      }
+    }
+
+    const newStudent: Student = {
+      id: crypto.randomUUID(),
+      name: app.name.trim(),
+      email: cleanEmail,
+      phone: app.phone.trim(),
+      instrument: app.instrument,
+      batch_name: app.batch_name,
+      skill_level: app.skill_level,
+      join_date: new Date().toISOString().split('T')[0],
+      status: 'pending',
+      fee_status: 'pending',
+      notes: app.notes ? `[APPLICATION] ${app.notes.trim()}` : '[APPLICATION] Self-enrollment request',
+    };
+
+    if (isLiveSupabase && supabase) {
+      try {
+        // Try inserting as 'pending'
+        const { data: inserted, error } = await supabase.from('students').insert([newStudent]).select().single();
+        if (error) {
+          // If check constraint rejects 'pending', fallback to 'inactive' with application tag
+          if (error.code === '23514') {
+            const fallbackStudent = { ...newStudent, status: 'inactive' as const };
+            const { data: fallbackInserted, error: fallbackError } = await supabase
+              .from('students')
+              .insert([fallbackStudent])
+              .select()
+              .single();
+            if (fallbackError) throw fallbackError;
+            setCurrentStudent(fallbackInserted || fallbackStudent);
+            return {
+              success: true,
+              message: 'Admission application submitted to Prof. Yug successfully!',
+              student: fallbackInserted || fallbackStudent,
+            };
+          }
+          throw error;
+        }
+
+        setCurrentStudent(inserted || newStudent);
+        return {
+          success: true,
+          message: 'Admission application submitted to Prof. Yug successfully!',
+          student: inserted || newStudent,
+        };
+      } catch (err: any) {
+        console.error('Supabase apply insert failed, saving locally:', err);
+      }
+    }
+
+    // Save locally
+    const saved = localStorage.getItem('yug_students_v1');
+    const list: Student[] = saved ? JSON.parse(saved) : [...DEMO_STUDENTS];
+    const updated = [newStudent, ...list];
+    localStorage.setItem('yug_students_v1', JSON.stringify(updated));
+
+    setCurrentStudent(newStudent);
+    return {
+      success: true,
+      message: 'Admission application submitted to Prof. Yug successfully!',
+      student: newStudent,
+    };
+  };
+
+  const logout = () => {
+    setCurrentStudent(null);
+  };
 
   const switchStudent = (studentId: string) => {
     const found = DEMO_STUDENTS.find((s) => s.id === studentId);
@@ -193,6 +456,8 @@ export const StudentProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   // Student Submits Audio Riyaaz
   const submitPractice = async (title: string, audioBlobUrl: string, notes?: string) => {
+    if (!currentStudent) return;
+
     const newSubmission: PracticeSubmission = {
       id: crypto.randomUUID(),
       student_id: currentStudent.id,
@@ -221,19 +486,30 @@ export const StudentProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   // Filter items specifically relevant to this student
   const studentNotifications = notifications.filter((notif) => {
+    if (!currentStudent) return false;
     if (notif.target_audience === 'all') return true;
     if (notif.target_audience === 'instrument' && notif.target_value === currentStudent.instrument) return true;
     if (notif.target_audience === 'batch' && notif.target_value === currentStudent.batch_name) return true;
     return false;
   });
 
-  const mySubmissions = allSubmissions.filter((sub) => sub.student_id === currentStudent.id);
-  const myAttendance = allAttendance.filter((att) => att.student_id === currentStudent.id);
+  const mySubmissions = currentStudent
+    ? allSubmissions.filter((sub) => sub.student_id === currentStudent.id)
+    : [];
+
+  const myAttendance = currentStudent
+    ? allAttendance.filter((att) => att.student_id === currentStudent.id)
+    : [];
 
   return (
     <StudentContext.Provider
       value={{
         currentStudent,
+        isLoggedIn: Boolean(currentStudent),
+        loginWithEmail,
+        applyForAdmission,
+        logout,
+        refreshStudentStatus,
         switchStudent,
         schedules,
         notifications: studentNotifications,
