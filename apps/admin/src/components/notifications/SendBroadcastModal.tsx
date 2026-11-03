@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { X, Radio, BellRing, Send } from 'lucide-react';
 import { NotificationCategory, TargetAudience } from '@yug/shared';
-import { INSTRUMENT_LIST, BATCH_NAMES } from '@yug/shared';
+import { INSTRUMENT_LIST, BATCH_NAMES, ACADEMY_CONFIG, sanitizeText } from '@yug/shared';
 import { useAppData } from '../../context/AppDataContext';
 
 interface SendBroadcastModalProps {
@@ -18,7 +18,7 @@ export const SendBroadcastModal: React.FC<SendBroadcastModalProps> = ({ isOpen, 
   const [targetAudience, setTargetAudience] = useState<TargetAudience>('all');
   const [targetValue, setTargetValue] = useState('');
   const [priority, setPriority] = useState<'normal' | 'high' | 'urgent'>('normal');
-  const [sentBy, setSentBy] = useState('Prof. Yug (Director)');
+  const [sentBy, setSentBy] = useState(`${ACADEMY_CONFIG.directorName} (${ACADEMY_CONFIG.directorTitle})`);
   const [submitting, setSubmitting] = useState(false);
 
   if (!isOpen) return null;
@@ -30,12 +30,12 @@ export const SendBroadcastModal: React.FC<SendBroadcastModalProps> = ({ isOpen, 
     setSubmitting(true);
     try {
       await sendNotification({
-        title,
-        message,
+        title: sanitizeText(title),
+        message: sanitizeText(message),
         category,
         target_audience: targetAudience,
         target_value: targetAudience === 'all' ? undefined : targetValue,
-        sent_by: sentBy,
+        sent_by: sanitizeText(sentBy) || ACADEMY_CONFIG.directorName,
         priority,
       });
       onClose();

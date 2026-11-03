@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowLeft, BellRing, CheckCheck, Megaphone, Users } from 'lucide-react';
+import { ACADEMY_CONFIG } from '@yug/shared';
 import { useStudentData } from '../context/StudentContext';
 
 interface NotificationsScreenProps {
@@ -22,7 +23,7 @@ export const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ onBack
           </button>
           <div>
             <h2 className="text-base font-extrabold text-ink leading-tight">Academy Notices</h2>
-            <p className="text-[11px] text-muted">Broadcasts sent by Prof. Yug</p>
+            <p className="text-[11px] text-muted">Broadcasts sent by {ACADEMY_CONFIG.directorName}</p>
           </div>
         </div>
 

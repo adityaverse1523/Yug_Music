@@ -1,5 +1,6 @@
 import React from 'react';
 import { Calendar, Video, MapPin, Clock, ExternalLink, Copy, Check } from 'lucide-react';
+import { sanitizeExternalUrl, ACADEMY_CONFIG } from '@yug/shared';
 import { useStudentData } from '../context/StudentContext';
 
 export const ClassesScreen: React.FC = () => {
@@ -23,7 +24,7 @@ export const ClassesScreen: React.FC = () => {
         </span>
         <h2 className="text-lg font-extrabold text-ink mt-1">Class Schedule</h2>
         <p className="text-xs text-muted">
-          Your weekly batches and live online sessions with Prof. Yug.
+          Your weekly batches and live online sessions with {ACADEMY_CONFIG.directorName}.
         </p>
       </div>
 
@@ -94,9 +95,9 @@ export const ClassesScreen: React.FC = () => {
               {schedule.class_type === 'online' && schedule.meeting_link && (
                 <div className="pt-1 flex items-center gap-2">
                   <a
-                    href={schedule.meeting_link}
+                    href={sanitizeExternalUrl(schedule.meeting_link)}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="flex-1 py-2 bg-accentgreen hover:bg-[#52604a] text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center justify-center gap-1.5"
                   >
                     <span>Join Class Now</span>

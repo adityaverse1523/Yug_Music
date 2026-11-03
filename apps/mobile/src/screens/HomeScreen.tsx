@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useStudentData } from '../context/StudentContext';
 import { MobileTab } from '../components/layout/BottomNav';
+import { sanitizeExternalUrl, ACADEMY_CONFIG } from '@yug/shared';
 
 interface HomeScreenProps {
   onNavigateTab: (tab: MobileTab) => void;
@@ -141,9 +142,9 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 
           {nextClass.class_type === 'online' && nextClass.meeting_link && (
             <a
-              href={nextClass.meeting_link}
+              href={sanitizeExternalUrl(nextClass.meeting_link)}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="w-full py-2 bg-accentgreen hover:bg-[#52604a] text-white rounded-xl text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-1.5"
             >
               <span>Join Live Class (Google Meet)</span>
@@ -161,7 +162,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           </span>
           <h3 className="font-extrabold text-sm text-ink">Ready for today's riyaaz?</h3>
           <p className="text-xs text-muted">
-            Record your practice track &amp; send it to Prof. Yug for feedback.
+            Record your practice track &amp; send it to {ACADEMY_CONFIG.directorName} for feedback.
           </p>
         </div>
 
@@ -200,7 +201,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             <p className="font-bold text-ink">{latestReviewed.title}</p>
             <p className="text-muted italic">"{latestReviewed.feedback_notes}"</p>
             <p className="text-[10px] text-gold-dark font-semibold pt-1">
-              Reviewed by Prof. Yug
+              Reviewed by {ACADEMY_CONFIG.directorName}
             </p>
           </div>
         </div>

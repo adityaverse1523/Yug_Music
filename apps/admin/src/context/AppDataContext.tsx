@@ -6,6 +6,7 @@ import {
   StudyMaterial,
   PracticeSubmission,
   AttendanceRecord,
+  ACADEMY_CONFIG,
 } from '@yug/shared';
 import {
   supabase,
@@ -362,7 +363,7 @@ export const AppDataProvider: React.FC<{ children: React.ReactNode }> = ({ child
       rating,
       status: 'reviewed' as const,
       reviewed_at: new Date().toISOString(),
-      reviewed_by: 'Prof. Yug',
+      reviewed_by: ACADEMY_CONFIG.directorName,
     };
 
     if (isSupabaseLive && supabase) {

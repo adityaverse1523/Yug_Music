@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Music, Sparkles, Mail, User, Phone, BookOpen, Send, ArrowRight, ShieldCheck, CheckCircle2 } from 'lucide-react';
-import { INSTRUMENT_LIST, BATCH_NAMES, InstrumentType, SkillLevel } from '@yug/shared';
+import { INSTRUMENT_LIST, BATCH_NAMES, InstrumentType, SkillLevel, ACADEMY_CONFIG, sanitizeText } from '@yug/shared';
 import { useStudentData } from '../context/StudentContext';
 
 export const AuthScreen: React.FC = () => {
@@ -60,7 +60,15 @@ export const AuthScreen: React.FC = () => {
     setApplyLoading(true);
     setApplyMessage(null);
 
-    const res = await applyForAdmission(formData);
+    const sanitizedData = {
+      ...formData,
+      name: sanitizeText(formData.name),
+      email: sanitizeText(formData.email),
+      phone: sanitizeText(formData.phone),
+      notes: sanitizeText(formData.notes),
+    };
+
+    const res = await applyForAdmission(sanitizedData);
     setApplyLoading(false);
 
     if (!res.success) {
@@ -312,7 +320,7 @@ export const AuthScreen: React.FC = () => {
 
             <div>
               <label className="block text-[11px] font-bold text-ink uppercase tracking-wider mb-1">
-                Note to Prof. Yug (Optional)
+                Note to {ACADEMY_CONFIG.directorName} (Optional)
               </label>
               <textarea
                 rows={2}
@@ -350,9 +358,10 @@ export const AuthScreen: React.FC = () => {
       {/* Footer Info */}
       <div className="text-center pt-4 pb-1">
         <p className="text-[11px] text-muted font-medium">
-          Need help? Contact Academy Director: <span className="text-ink font-bold">+91 98765 43210</span>
+          Need help? Contact Academy Director: <span className="text-ink font-bold">{ACADEMY_CONFIG.contactPhone}</span>
         </p>
       </div>
     </div>
   );
 };
+

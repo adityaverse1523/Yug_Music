@@ -13,6 +13,8 @@
     "dev:mobile": "npm run dev --workspace=@yug/mobile",
     "build:mobile": "npm run build --workspace=@yug/mobile",
     "preview:mobile": "npm run preview --workspace=@yug/mobile"
+  },
+  "overrides": {
+    "esbuild": "^0.25.0"
   }
 }
-

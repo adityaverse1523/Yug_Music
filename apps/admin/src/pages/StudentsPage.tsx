@@ -16,7 +16,7 @@ import {
   Award,
   BookOpen,
 } from 'lucide-react';
-import { INSTRUMENT_LIST } from '@yug/shared';
+import { INSTRUMENT_LIST, ACADEMY_CONFIG } from '@yug/shared';
 import { useAppData } from '../context/AppDataContext';
 
 interface StudentsPageProps {
@@ -70,7 +70,7 @@ export const StudentsPage: React.FC<StudentsPageProps> = ({ onOpenStudentModal }
         category: 'announcement',
         target_audience: 'all',
         priority: 'high',
-        sent_by: 'Prof. Yug (Director)',
+        sent_by: `${ACADEMY_CONFIG.directorName} (${ACADEMY_CONFIG.directorTitle})`,
       });
 
       setActionSuccessMessage(`✓ ${student.name}'s application accepted! Access has been unlocked on their mobile app in real-time.`);

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Clock, ShieldAlert, Sparkles, RefreshCw, LogOut, CheckCircle2, Music, Phone, Mail, Award } from 'lucide-react';
+import { ACADEMY_CONFIG } from '@yug/shared';
 import { useStudentData } from '../context/StudentContext';
 
 export const ApplicationUnderReviewScreen: React.FC = () => {
@@ -40,7 +41,7 @@ export const ApplicationUnderReviewScreen: React.FC = () => {
         <div className="border-b border-line/60 pb-3">
           <h2 className="text-lg font-black text-ink">Namaste, {currentStudent.name}! 🙏</h2>
           <p className="text-xs text-muted mt-1 leading-relaxed">
-            Aapki admission application <strong className="text-ink">Prof. Yug</strong> ke paas review ke liye chali gayi hai. Jaise hi Sir Admin panel se approve karenge, aapka course, live classes, riyaaz aur library access <strong className="text-gold-dark">automatically unlock</strong> ho jayega!
+            Aapki admission application <strong className="text-ink">{ACADEMY_CONFIG.directorName}</strong> ke paas review ke liye chali gayi hai. Jaise hi Sir Admin panel se approve karenge, aapka course, live classes, riyaaz aur library access <strong className="text-gold-dark">automatically unlock</strong> ho jayega!
           </p>
         </div>
 
@@ -106,9 +107,10 @@ export const ApplicationUnderReviewScreen: React.FC = () => {
           <span>Sign In with another Email / Student ID</span>
         </button>
         <p className="text-[10px] text-muted">
-          Need urgent approval? Call Academy: <span className="font-bold text-ink">+91 98765 43210</span>
+          Need urgent approval? Call Academy: <span className="font-bold text-ink">{ACADEMY_CONFIG.contactPhone}</span>
         </p>
       </div>
     </div>
   );
 };
+

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Mic, Square, Play, RotateCcw, Send, CheckCircle2, Volume2, Sparkles } from 'lucide-react';
+import { ACADEMY_CONFIG, sanitizeText } from '@yug/shared';
 import { useStudentData } from '../../context/StudentContext';
 
 interface VoiceRecorderProps {
@@ -90,7 +91,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onSubmitted }) => 
 
     setIsSubmitting(true);
     try {
-      await submitPractice(title, audioUrl, notes);
+      await submitPractice(sanitizeText(title), audioUrl, sanitizeText(notes));
       setSubmittedSuccess(true);
       setTimeout(() => {
         setSubmittedSuccess(false);
@@ -120,7 +121,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onSubmitted }) => 
         </span>
         <h3 className="font-extrabold text-lg text-ink">Record Practice Session</h3>
         <p className="text-xs text-muted">
-          Record your {currentStudent.instrument} riyaaz and submit to Prof. Yug for feedback.
+          Record your {currentStudent.instrument} riyaaz and submit to {ACADEMY_CONFIG.directorName} for feedback.
         </p>
       </div>
 
@@ -129,7 +130,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onSubmitted }) => 
           <CheckCircle2 className="w-12 h-12 text-accentgreen mx-auto" />
           <h4 className="font-extrabold text-base text-ink">Practice Submitted to Sir!</h4>
           <p className="text-xs text-muted">
-            Prof. Yug will listen to your recording and provide review notes and rating.
+            {ACADEMY_CONFIG.directorName} will listen to your recording and provide review notes and rating.
           </p>
         </div>
       ) : (
@@ -194,7 +195,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onSubmitted }) => 
 
               <div>
                 <label className="block text-xs font-bold text-ink mb-1">
-                  Question / Note for Prof. Yug
+                  Question / Note for {ACADEMY_CONFIG.directorName}
                 </label>
                 <textarea
                   rows={2}

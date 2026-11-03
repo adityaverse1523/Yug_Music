@@ -9,7 +9,7 @@ import {
   Trash2,
   ExternalLink,
 } from 'lucide-react';
-import { INSTRUMENT_LIST, MaterialType } from '@yug/shared';
+import { INSTRUMENT_LIST, MaterialType, sanitizeExternalUrl } from '@yug/shared';
 import { useAppData } from '../context/AppDataContext';
 
 interface MaterialsPageProps {
@@ -154,9 +154,9 @@ export const MaterialsPage: React.FC<MaterialsPageProps> = ({ onOpenMaterialModa
 
                 <div className="flex items-center gap-1.5">
                   <a
-                    href={item.file_url}
+                    href={sanitizeExternalUrl(item.file_url)}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="p-1.5 bg-soft hover:bg-gold hover:text-white rounded-lg text-gold-dark transition-colors border border-line cursor-pointer flex items-center gap-1"
                     title="Open Resource"
                   >

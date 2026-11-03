@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, Video, MapPin } from 'lucide-react';
-import { INSTRUMENT_LIST, BATCH_NAMES, DAYS_OF_WEEK } from '@yug/shared';
+import { INSTRUMENT_LIST, BATCH_NAMES, DAYS_OF_WEEK, ACADEMY_CONFIG, sanitizeExternalUrl, sanitizeText } from '@yug/shared';
 import { InstrumentType, ClassType, RecurrenceType } from '@yug/shared';
 import { useAppData } from '../../context/AppDataContext';
 
@@ -15,10 +15,10 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ isOpen, onCl
   const [title, setTitle] = useState('');
   const [instrument, setInstrument] = useState<InstrumentType>('Guitar');
   const [batchName, setBatchName] = useState(BATCH_NAMES[1]);
-  const [teacherName, setTeacherName] = useState('Prof. Yug');
+  const [teacherName, setTeacherName] = useState(ACADEMY_CONFIG.directorName);
   const [classType, setClassType] = useState<ClassType>('online');
-  const [meetingLink, setMeetingLink] = useState('https://meet.google.com/yug-live-');
-  const [roomNumber, setRoomNumber] = useState('Studio Room 1');
+  const [meetingLink, setMeetingLink] = useState(ACADEMY_CONFIG.defaultMeetingLink);
+  const [roomNumber, setRoomNumber] = useState(ACADEMY_CONFIG.location);
   const [dayOfWeek, setDayOfWeek] = useState(DAYS_OF_WEEK[0]);
   const [date, setDate] = useState('');
   const [startTime, setStartTime] = useState('17:00');
@@ -37,20 +37,20 @@ export const AddScheduleModal: React.FC<AddScheduleModalProps> = ({ isOpen, onCl
     setSubmitting(true);
     try {
       await addSchedule({
-        title,
+        title: sanitizeText(title),
         instrument,
         batch_name: batchName,
-        teacher_name: teacherName,
+        teacher_name: sanitizeText(teacherName) || ACADEMY_CONFIG.directorName,
         class_type: classType,
-        meeting_link: classType === 'online' ? meetingLink : undefined,
-        room_number: classType === 'offline' ? roomNumber : undefined,
+        meeting_link: classType === 'online' ? sanitizeExternalUrl(meetingLink) : undefined,
+        room_number: classType === 'offline' ? sanitizeText(roomNumber) : undefined,
         day_of_week: recurrence === 'weekly' ? dayOfWeek : undefined,
         date: recurrence === 'once' ? date : undefined,
         start_time: startTime,
         end_time: endTime,
         recurrence,
         max_students: Number(maxStudents),
-        description,
+        description: sanitizeText(description),
       });
       onClose();
       // Reset form

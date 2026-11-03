@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { useAppData } from '../context/AppDataContext';
 import { AdminTab } from '../components/layout/Sidebar';
+import { sanitizeExternalUrl, ACADEMY_CONFIG } from '@yug/shared';
 
 interface DashboardPageProps {
   onNavigate: (tab: AdminTab) => void;
@@ -87,7 +88,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <span className="text-[11px] font-extrabold uppercase tracking-widest text-gold-dark bg-soft px-2.5 py-0.5 rounded-full border border-line">
               Academy Control Center
             </span>
-            <span className="text-xs text-muted font-medium">• Namaste, Prof. Yug</span>
+            <span className="text-xs text-muted font-medium">• Namaste, {ACADEMY_CONFIG.directorName}</span>
           </div>
           <h1 className="text-2xl md:text-3xl font-extrabold text-ink tracking-tight">
             Musical Academy Dashboard
@@ -242,9 +243,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   {item.class_type === 'online' && item.meeting_link && (
                     <a
-                      href={item.meeting_link}
+                      href={sanitizeExternalUrl(item.meeting_link)}
                       target="_blank"
-                      rel="noreferrer"
+                      rel="noopener noreferrer"
                       className="px-3 py-1.5 bg-accentgreen hover:bg-[#52604a] text-white rounded-lg text-xs font-bold shrink-0 transition-colors flex items-center gap-1"
                     >
                       <span>Join</span>

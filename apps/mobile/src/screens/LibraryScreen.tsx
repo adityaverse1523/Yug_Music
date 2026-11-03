@@ -13,7 +13,7 @@ import {
   CheckCircle,
 } from 'lucide-react';
 import { useStudentData } from '../context/StudentContext';
-import { ACADEMY_SUBJECTS, MaterialType, StudyMaterial } from '@yug/shared';
+import { ACADEMY_SUBJECTS, MaterialType, StudyMaterial, sanitizeExternalUrl } from '@yug/shared';
 
 export const LibraryScreen: React.FC = () => {
   const { currentStudent, materials } = useStudentData();
@@ -324,9 +324,9 @@ export const LibraryScreen: React.FC = () => {
                           </div>
 
                           <a
-                            href={item.file_url}
+                            href={sanitizeExternalUrl(item.file_url)}
                             target="_blank"
-                            rel="noreferrer"
+                            rel="noopener noreferrer"
                             className="p-1.5 bg-soft hover:bg-gold hover:text-white rounded-lg text-gold-dark transition-colors border border-line shrink-0 cursor-pointer"
                             title="Open / Download Document"
                           >

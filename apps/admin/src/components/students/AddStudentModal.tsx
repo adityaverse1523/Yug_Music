@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, UserPlus } from 'lucide-react';
-import { INSTRUMENT_LIST, BATCH_NAMES, InstrumentType, SkillLevel, FeeStatus } from '@yug/shared';
+import { INSTRUMENT_LIST, BATCH_NAMES, InstrumentType, SkillLevel, FeeStatus, sanitizeText } from '@yug/shared';
 import { useAppData } from '../../context/AppDataContext';
 
 interface AddStudentModalProps {
@@ -30,14 +30,14 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({ isOpen, onClos
     setSubmitting(true);
     try {
       await addStudent({
-        name,
-        email,
-        phone,
+        name: sanitizeText(name),
+        email: sanitizeText(email).toLowerCase(),
+        phone: sanitizeText(phone),
         instrument,
         skill_level: skillLevel,
         batch_name: batchName,
         fee_status: feeStatus,
-        notes,
+        notes: sanitizeText(notes),
       });
       onClose();
       // Reset

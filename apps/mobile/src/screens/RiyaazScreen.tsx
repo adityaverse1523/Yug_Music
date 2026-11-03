@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Mic, ListMusic, Star, Volume2, Award, Clock } from 'lucide-react';
+import { ACADEMY_CONFIG } from '@yug/shared';
 import { useStudentData } from '../context/StudentContext';
 import { VoiceRecorder } from '../components/recorder/VoiceRecorder';
 
@@ -54,7 +55,7 @@ export const RiyaazScreen: React.FC = () => {
               </div>
               <p className="text-sm font-bold text-ink">No recordings submitted yet</p>
               <p className="text-xs text-muted max-w-xs mx-auto">
-                Record your first riyaaz track to receive guidance and rating from Prof. Yug.
+                Record your first riyaaz track to receive guidance and rating from {ACADEMY_CONFIG.directorName}.
               </p>
               <button
                 onClick={() => setActiveSubTab('record')}
@@ -102,7 +103,7 @@ export const RiyaazScreen: React.FC = () => {
                   <div className="p-3 bg-[#f5f8f3] rounded-xl border border-[#dce8d5] space-y-1.5">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-extrabold text-accentgreen flex items-center gap-1">
-                        <Award className="w-3.5 h-3.5" /> Prof. Yug's Feedback
+                        <Award className="w-3.5 h-3.5" /> {ACADEMY_CONFIG.directorName}'s Feedback
                       </span>
                       <div className="flex items-center gap-0.5">
                         {[1, 2, 3, 4, 5].map((star) => (

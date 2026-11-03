@@ -1,5 +1,6 @@
 import React from 'react';
 import { Radio, Database, CalendarPlus } from 'lucide-react';
+import { ACADEMY_CONFIG } from '@yug/shared';
 import { useAppData } from '../../context/AppDataContext';
 
 interface HeaderProps {
@@ -86,8 +87,8 @@ export const Header: React.FC<HeaderProps> = ({
               PY
             </div>
             <div>
-              <p className="font-bold text-ink leading-tight">Prof. Yug</p>
-              <p className="text-[11px] text-muted">Academy Director</p>
+              <p className="font-bold text-ink leading-tight">{ACADEMY_CONFIG.directorName}</p>
+              <p className="text-[11px] text-muted">{ACADEMY_CONFIG.directorTitle}</p>
             </div>
           </div>
         </div>

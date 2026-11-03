@@ -9,6 +9,7 @@ import {
   DEFAULT_STUDY_MATERIALS,
   InstrumentType,
   SkillLevel,
+  ACADEMY_CONFIG,
 } from '@yug/shared';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
@@ -409,7 +410,7 @@ export const StudentProvider: React.FC<{ children: React.ReactNode }> = ({ child
             setCurrentStudent(fallbackInserted || fallbackStudent);
             return {
               success: true,
-              message: 'Admission application submitted to Prof. Yug successfully!',
+              message: `Admission application submitted to ${ACADEMY_CONFIG.directorName} successfully!`,
               student: fallbackInserted || fallbackStudent,
             };
           }
@@ -419,7 +420,7 @@ export const StudentProvider: React.FC<{ children: React.ReactNode }> = ({ child
         setCurrentStudent(inserted || newStudent);
         return {
           success: true,
-          message: 'Admission application submitted to Prof. Yug successfully!',
+          message: `Admission application submitted to ${ACADEMY_CONFIG.directorName} successfully!`,
           student: inserted || newStudent,
         };
       } catch (err: any) {
@@ -436,7 +437,7 @@ export const StudentProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setCurrentStudent(newStudent);
     return {
       success: true,
-      message: 'Admission application submitted to Prof. Yug successfully!',
+      message: `Admission application submitted to ${ACADEMY_CONFIG.directorName} successfully!`,
       student: newStudent,
     };
   };

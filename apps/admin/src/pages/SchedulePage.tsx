@@ -12,7 +12,7 @@ import {
   Check,
   Filter,
 } from 'lucide-react';
-import { INSTRUMENT_LIST } from '@yug/shared';
+import { INSTRUMENT_LIST, sanitizeExternalUrl } from '@yug/shared';
 import { useAppData } from '../context/AppDataContext';
 
 interface SchedulePageProps {
@@ -200,9 +200,9 @@ export const SchedulePage: React.FC<SchedulePageProps> = ({ onOpenScheduleModal 
                     {schedule.class_type === 'online' && schedule.meeting_link && (
                       <>
                         <a
-                          href={schedule.meeting_link}
+                          href={sanitizeExternalUrl(schedule.meeting_link)}
                           target="_blank"
-                          rel="noreferrer"
+                          rel="noopener noreferrer"
                           className="px-3 py-1.5 bg-accentgreen hover:bg-[#52604a] text-white rounded-lg text-xs font-bold transition-colors flex items-center gap-1"
                         >
                           <span>Start Class</span>

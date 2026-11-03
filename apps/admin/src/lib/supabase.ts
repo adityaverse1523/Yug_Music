@@ -6,6 +6,7 @@ import {
   StudyMaterial,
   PracticeSubmission,
   AttendanceRecord,
+  ACADEMY_CONFIG,
 } from '@yug/shared';
 
 const supabaseUrl: string = (import.meta as any).env?.VITE_SUPABASE_URL || '';
@@ -97,7 +98,7 @@ export const INITIAL_SCHEDULES: ClassSchedule[] = [
     title: 'Acoustic Guitar Foundations',
     instrument: 'Guitar',
     batch_name: 'Acoustic Guitar - Beginners',
-    teacher_name: 'Prof. Yug',
+    teacher_name: ACADEMY_CONFIG.directorName,
     class_type: 'online',
     meeting_link: 'https://meet.google.com/yug-guit-001',
     day_of_week: 'Monday',
@@ -114,7 +115,7 @@ export const INITIAL_SCHEDULES: ClassSchedule[] = [
     title: 'Morning Raag Sadhana & Swar Practice',
     instrument: 'Singing / Vocal',
     batch_name: 'Morning Riyaaz (Vocal & Harmonium)',
-    teacher_name: 'Prof. Yug',
+    teacher_name: ACADEMY_CONFIG.directorName,
     class_type: 'online',
     meeting_link: 'https://meet.google.com/yug-riya-002',
     day_of_week: 'Tuesday',
@@ -131,7 +132,7 @@ export const INITIAL_SCHEDULES: ClassSchedule[] = [
     title: 'Piano Chords & Arpeggios',
     instrument: 'Piano',
     batch_name: 'Classical Piano & Keyboard',
-    teacher_name: 'Prof. Yug',
+    teacher_name: ACADEMY_CONFIG.directorName,
     class_type: 'offline',
     room_number: 'Studio Room 1',
     day_of_week: 'Wednesday',
@@ -148,7 +149,7 @@ export const INITIAL_SCHEDULES: ClassSchedule[] = [
     title: 'Drum Kit Grooves & Rudiments',
     instrument: 'Drums',
     batch_name: 'Rhythm & Percussion (Drums & Tabla)',
-    teacher_name: 'Prof. Yug',
+    teacher_name: ACADEMY_CONFIG.directorName,
     class_type: 'offline',
     room_number: 'Soundproof Room 3',
     day_of_week: 'Saturday',
@@ -169,7 +170,7 @@ export const INITIAL_NOTIFICATIONS: AcademyNotification[] = [
     message: 'We are hosting the Monthly Student Recital this coming Sunday at 5:00 PM. All students are invited to perform one piece or join as audience.',
     category: 'announcement',
     target_audience: 'all',
-    sent_by: 'Prof. Yug (Admin)',
+    sent_by: ACADEMY_CONFIG.directorName,
     priority: 'high',
     read_by_count: 28,
     created_at: new Date(Date.now() - 3600000 * 24 * 2).toISOString(),
@@ -181,7 +182,7 @@ export const INITIAL_NOTIFICATIONS: AcademyNotification[] = [
     category: 'practice_reminder',
     target_audience: 'instrument',
     target_value: 'Guitar',
-    sent_by: 'Prof. Yug (Admin)',
+    sent_by: ACADEMY_CONFIG.directorName,
     priority: 'normal',
     read_by_count: 14,
     created_at: new Date(Date.now() - 3600000 * 24).toISOString(),
@@ -193,7 +194,7 @@ export const INITIAL_NOTIFICATIONS: AcademyNotification[] = [
     category: 'class_update',
     target_audience: 'batch',
     target_value: 'Morning Riyaaz (Vocal & Harmonium)',
-    sent_by: 'Prof. Yug (Admin)',
+    sent_by: ACADEMY_CONFIG.directorName,
     priority: 'urgent',
     read_by_count: 18,
     created_at: new Date(Date.now() - 3600000 * 6).toISOString(),
@@ -212,7 +213,7 @@ export const INITIAL_MATERIALS: StudyMaterial[] = [
     file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
     file_size: '2.4 MB',
     description: 'Diagrams with standard fingering numbers, chord transition shortcuts, and thumb placement.',
-    uploaded_by: 'Prof. Yug',
+    uploaded_by: ACADEMY_CONFIG.directorName,
     created_at: new Date(Date.now() - 3600000 * 24 * 5).toISOString(),
   },
   {
@@ -225,7 +226,7 @@ export const INITIAL_MATERIALS: StudyMaterial[] = [
     file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
     file_size: '1.8 MB',
     description: 'Down-Up strumming exercises with accent marks and dynamic control tips.',
-    uploaded_by: 'Prof. Yug',
+    uploaded_by: ACADEMY_CONFIG.directorName,
     created_at: new Date(Date.now() - 3600000 * 24 * 4).toISOString(),
   },
   {
@@ -238,7 +239,7 @@ export const INITIAL_MATERIALS: StudyMaterial[] = [
     file_url: 'https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3',
     file_size: '6.4 MB',
     description: 'Practice audio track: Box 1 to 5 fretboard runs with backing groove.',
-    uploaded_by: 'Prof. Yug',
+    uploaded_by: ACADEMY_CONFIG.directorName,
     created_at: new Date(Date.now() - 3600000 * 24 * 2).toISOString(),
   },
 
@@ -253,7 +254,7 @@ export const INITIAL_MATERIALS: StudyMaterial[] = [
     file_url: 'https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3',
     file_size: '8.1 MB',
     description: 'Guided 15-minute vocal warm-up audio for swar shuddhi, omkar, and pitch hold.',
-    uploaded_by: 'Prof. Yug',
+    uploaded_by: ACADEMY_CONFIG.directorName,
     created_at: new Date(Date.now() - 3600000 * 24 * 3).toISOString(),
   },
   {
@@ -266,7 +267,7 @@ export const INITIAL_MATERIALS: StudyMaterial[] = [
     file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
     file_size: '3.1 MB',
     description: 'Full Bhatkhande notation with lyrics for bandish in Teen Taal (16 beats).',
-    uploaded_by: 'Prof. Yug',
+    uploaded_by: ACADEMY_CONFIG.directorName,
     created_at: new Date(Date.now() - 3600000 * 24 * 6).toISOString(),
   },
   {
@@ -279,7 +280,7 @@ export const INITIAL_MATERIALS: StudyMaterial[] = [
     file_url: 'https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3',
     file_size: '12.0 MB',
     description: 'High fidelity acoustic tanpura loop set at C# pitch for personal riyaaz.',
-    uploaded_by: 'Prof. Yug',
+    uploaded_by: ACADEMY_CONFIG.directorName,
     created_at: new Date(Date.now() - 3600000 * 24 * 8).toISOString(),
   },
 
@@ -294,7 +295,7 @@ export const INITIAL_MATERIALS: StudyMaterial[] = [
     file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
     file_size: '5.2 MB',
     description: 'Standard fingerings for all major and natural/harmonic minor scales across 2 octaves.',
-    uploaded_by: 'Prof. Yug',
+    uploaded_by: ACADEMY_CONFIG.directorName,
     created_at: new Date(Date.now() - 3600000 * 24 * 7).toISOString(),
   },
   {
@@ -307,7 +308,7 @@ export const INITIAL_MATERIALS: StudyMaterial[] = [
     file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
     file_size: '3.7 MB',
     description: 'Finger velocity and wrist relaxation exercises for equal strength in both hands.',
-    uploaded_by: 'Prof. Yug',
+    uploaded_by: ACADEMY_CONFIG.directorName,
     created_at: new Date(Date.now() - 3600000 * 24 * 5).toISOString(),
   },
   {
@@ -320,7 +321,7 @@ export const INITIAL_MATERIALS: StudyMaterial[] = [
     file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
     file_size: '22 MB',
     description: 'Slow motion overhead camera demonstration of left-hand bass arpeggios.',
-    uploaded_by: 'Prof. Yug',
+    uploaded_by: ACADEMY_CONFIG.directorName,
     created_at: new Date(Date.now() - 3600000 * 24 * 1).toISOString(),
   },
 
@@ -335,7 +336,7 @@ export const INITIAL_MATERIALS: StudyMaterial[] = [
     file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
     file_size: '2.9 MB',
     description: 'Single strokes, double strokes, paradiddles and hi-hat foot dynamics.',
-    uploaded_by: 'Prof. Yug',
+    uploaded_by: ACADEMY_CONFIG.directorName,
     created_at: new Date(Date.now() - 3600000 * 24 * 9).toISOString(),
   },
   {
@@ -348,7 +349,7 @@ export const INITIAL_MATERIALS: StudyMaterial[] = [
     file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
     file_size: '1.9 MB',
     description: 'Dha Dhin Dhin Dha breakdown with Tali and Khali markings for classical accompaniment.',
-    uploaded_by: 'Prof. Yug',
+    uploaded_by: ACADEMY_CONFIG.directorName,
     created_at: new Date(Date.now() - 3600000 * 24 * 4).toISOString(),
   },
 ];
@@ -380,7 +381,7 @@ export const INITIAL_SUBMISSIONS: PracticeSubmission[] = [
     feedback_notes: 'Excellent pitch clarity! Keep the Teevra Ma steady on the sustain without shaking. Overall 9/10.',
     rating: 5,
     reviewed_at: new Date(Date.now() - 3600000 * 12).toISOString(),
-    reviewed_by: 'Prof. Yug',
+    reviewed_by: ACADEMY_CONFIG.directorName,
   },
 ];
 

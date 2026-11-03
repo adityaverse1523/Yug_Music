@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, FolderPlus } from 'lucide-react';
-import { INSTRUMENT_LIST, BATCH_NAMES, InstrumentType, MaterialType } from '@yug/shared';
+import { INSTRUMENT_LIST, BATCH_NAMES, InstrumentType, MaterialType, ACADEMY_CONFIG, sanitizeExternalUrl, sanitizeText } from '@yug/shared';
 import { useAppData } from '../../context/AppDataContext';
 
 interface AddMaterialModalProps {
@@ -29,14 +29,14 @@ export const AddMaterialModal: React.FC<AddMaterialModalProps> = ({ isOpen, onCl
     setSubmitting(true);
     try {
       await addMaterial({
-        title,
+        title: sanitizeText(title),
         instrument,
         batch_name: batchName,
         material_type: materialType,
-        file_url: fileUrl,
-        file_size: fileSize,
-        description,
-        uploaded_by: 'Prof. Yug',
+        file_url: sanitizeExternalUrl(fileUrl),
+        file_size: sanitizeText(fileSize),
+        description: sanitizeText(description),
+        uploaded_by: ACADEMY_CONFIG.directorName,
       });
       onClose();
       // Reset

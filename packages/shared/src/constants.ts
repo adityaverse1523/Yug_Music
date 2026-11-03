@@ -1,5 +1,17 @@
 import { InstrumentType, StudyMaterial } from './types';
 
+export const ACADEMY_CONFIG = {
+  name: 'YUG Musical Academy',
+  shortName: 'YUG Academy',
+  tagline: 'Classical Discipline • Acoustic Soul • Pure Riyaaz',
+  directorName: 'Prof. Yug',
+  directorTitle: 'Director & Master Instructor',
+  contactPhone: '+91 98765 43210',
+  contactEmail: 'admissions@yugmusicalacademy.com',
+  location: 'Studio Sound Room, Mumbai',
+  defaultMeetingLink: 'https://meet.google.com/yug-class-live',
+};
+
 export const ACADEMY_THEME = {
   colors: {
     cream: '#fbf7ef',
@@ -101,7 +113,7 @@ export const DEFAULT_STUDY_MATERIALS: StudyMaterial[] = [
     file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
     file_size: '2.4 MB',
     description: 'Detailed chord box diagrams with exact finger placement numbers and pivot finger transitions.',
-    uploaded_by: 'Prof. Yug',
+    uploaded_by: ACADEMY_CONFIG.directorName,
     created_at: new Date(Date.now() - 3600000 * 24 * 5).toISOString(),
   },
   {
@@ -114,7 +126,7 @@ export const DEFAULT_STUDY_MATERIALS: StudyMaterial[] = [
     file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
     file_size: '1.8 MB',
     description: 'Down-up strumming rhythms with dynamic accent marks and muting techniques.',
-    uploaded_by: 'Prof. Yug',
+    uploaded_by: ACADEMY_CONFIG.directorName,
     created_at: new Date(Date.now() - 3600000 * 24 * 4).toISOString(),
   },
   {
@@ -127,7 +139,7 @@ export const DEFAULT_STUDY_MATERIALS: StudyMaterial[] = [
     file_url: 'https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3',
     file_size: '6.4 MB',
     description: 'Box 1 to 5 fretboard runs with backing groove for personal riyaaz and speed building.',
-    uploaded_by: 'Prof. Yug',
+    uploaded_by: ACADEMY_CONFIG.directorName,
     created_at: new Date(Date.now() - 3600000 * 24 * 2).toISOString(),
   },
   {
@@ -140,7 +152,7 @@ export const DEFAULT_STUDY_MATERIALS: StudyMaterial[] = [
     file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
     file_size: '3.2 MB',
     description: 'Alternating bass fingerstyle pattern for acoustic guitar.',
-    uploaded_by: 'Prof. Yug',
+    uploaded_by: ACADEMY_CONFIG.directorName,
     created_at: new Date(Date.now() - 3600000 * 24 * 6).toISOString(),
   },
 
@@ -155,7 +167,7 @@ export const DEFAULT_STUDY_MATERIALS: StudyMaterial[] = [
     file_url: 'https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3',
     file_size: '8.1 MB',
     description: 'Daily 15-minute vocal warm-up audio for swar shuddhi, Omkar sadhana, and pitch stability.',
-    uploaded_by: 'Prof. Yug',
+    uploaded_by: ACADEMY_CONFIG.directorName,
     created_at: new Date(Date.now() - 3600000 * 24 * 3).toISOString(),
   },
   {
@@ -168,7 +180,7 @@ export const DEFAULT_STUDY_MATERIALS: StudyMaterial[] = [
     file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
     file_size: '3.1 MB',
     description: 'Full Bhatkhande notation with lyrics for bandish in Teen Taal (16 beats).',
-    uploaded_by: 'Prof. Yug',
+    uploaded_by: ACADEMY_CONFIG.directorName,
     created_at: new Date(Date.now() - 3600000 * 24 * 6).toISOString(),
   },
   {
@@ -181,7 +193,7 @@ export const DEFAULT_STUDY_MATERIALS: StudyMaterial[] = [
     file_url: 'https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3',
     file_size: '12.0 MB',
     description: 'Pure acoustic tanpura loop set at C# pitch for daily home riyaaz.',
-    uploaded_by: 'Prof. Yug',
+    uploaded_by: ACADEMY_CONFIG.directorName,
     created_at: new Date(Date.now() - 3600000 * 24 * 8).toISOString(),
   },
   {
@@ -194,7 +206,7 @@ export const DEFAULT_STUDY_MATERIALS: StudyMaterial[] = [
     file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
     file_size: '1.4 MB',
     description: 'Breathing exercises to expand lung capacity, sustain high notes, and eliminate vocal strain.',
-    uploaded_by: 'Prof. Yug',
+    uploaded_by: ACADEMY_CONFIG.directorName,
     created_at: new Date(Date.now() - 3600000 * 24 * 10).toISOString(),
   },
 
@@ -209,7 +221,7 @@ export const DEFAULT_STUDY_MATERIALS: StudyMaterial[] = [
     file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
     file_size: '5.2 MB',
     description: 'Standard fingerings for all major and natural/harmonic minor scales across 2 octaves.',
-    uploaded_by: 'Prof. Yug',
+    uploaded_by: ACADEMY_CONFIG.directorName,
     created_at: new Date(Date.now() - 3600000 * 24 * 7).toISOString(),
   },
   {
@@ -222,7 +234,7 @@ export const DEFAULT_STUDY_MATERIALS: StudyMaterial[] = [
     file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
     file_size: '3.7 MB',
     description: 'Finger agility and wrist relaxation exercises for balanced strength in both hands.',
-    uploaded_by: 'Prof. Yug',
+    uploaded_by: ACADEMY_CONFIG.directorName,
     created_at: new Date(Date.now() - 3600000 * 24 * 5).toISOString(),
   },
   {
@@ -235,7 +247,7 @@ export const DEFAULT_STUDY_MATERIALS: StudyMaterial[] = [
     file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
     file_size: '22 MB',
     description: 'Overhead camera demonstration of left-hand bass arpeggios while right hand plays melody.',
-    uploaded_by: 'Prof. Yug',
+    uploaded_by: ACADEMY_CONFIG.directorName,
     created_at: new Date(Date.now() - 3600000 * 24 * 1).toISOString(),
   },
 
@@ -250,7 +262,7 @@ export const DEFAULT_STUDY_MATERIALS: StudyMaterial[] = [
     file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
     file_size: '2.9 MB',
     description: 'Single strokes, double strokes, paradiddles, flams, and ruffs with stick notation (R/L).',
-    uploaded_by: 'Prof. Yug',
+    uploaded_by: ACADEMY_CONFIG.directorName,
     created_at: new Date(Date.now() - 3600000 * 24 * 9).toISOString(),
   },
   {
@@ -263,7 +275,7 @@ export const DEFAULT_STUDY_MATERIALS: StudyMaterial[] = [
     file_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
     file_size: '1.9 MB',
     description: 'Dha Dhin Dhin Dha breakdown with Tali and Khali markings for classical accompaniment.',
-    uploaded_by: 'Prof. Yug',
+    uploaded_by: ACADEMY_CONFIG.directorName,
     created_at: new Date(Date.now() - 3600000 * 24 * 4).toISOString(),
   },
   {
@@ -276,7 +288,7 @@ export const DEFAULT_STUDY_MATERIALS: StudyMaterial[] = [
     file_url: 'https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3',
     file_size: '5.5 MB',
     description: 'Audio backing loop with bassline for student drum fills and solid tempo locking.',
-    uploaded_by: 'Prof. Yug',
+    uploaded_by: ACADEMY_CONFIG.directorName,
     created_at: new Date(Date.now() - 3600000 * 24 * 2).toISOString(),
   },
 ];
