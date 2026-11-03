@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cream: #fbf7ef;
+  --paper: #fffdf9;
+  --ink: #302b25;
+  --muted: #746d63;
+  --gold: #b58a4b;
+  --gold-dark: #8c6836;
+  --line: #e9e0d2;
+  --soft: #f3ecdf;
+  --green: #64745b;
+}
+
+body {
+  margin: 0;
+  background-color: var(--cream);
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbar for elegant music theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--soft);
+}
+::-webkit-scrollbar-thumb {
+  background: #d8cfc1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
+}
+

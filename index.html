@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YUG Musical Academy</title>
+<style>
+:root{
+  --cream:#fbf7ef; --paper:#fffdf9; --ink:#302b25; --muted:#746d63;
+  --gold:#b58a4b; --gold-dark:#8c6836; --line:#e9e0d2; --soft:#f3ecdf;
+  --green:#64745b;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.55}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit}
+.wrap{width:min(1120px,92%);margin:auto}
+header{background:var(--paper);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+.nav{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:.5px}
+.brand-mark{width:40px;height:40px;border-radius:50%;background:var(--soft);display:grid;place-items:center;color:var(--gold-dark);font-size:21px}
+.brand small{display:block;font-size:10px;letter-spacing:2px;color:var(--muted);font-weight:600}
+nav{display:flex;align-items:center;gap:22px;color:var(--muted);font-size:14px}
+nav a:hover{color:var(--gold-dark)}
+.btn{border:0;border-radius:9px;padding:12px 18px;background:var(--gold);color:white;font-weight:700;cursor:pointer;display:inline-block}
+.btn:hover{background:var(--gold-dark)}
+.btn.secondary{background:var(--soft);color:var(--ink);border:1px solid var(--line)}
+.menu-toggle{display:none;background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+.hero{padding:64px 0 58px}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:42px;align-items:center}
+.eyebrow{color:var(--gold-dark);font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:12px}
+h1{font-size:clamp(36px,5vw,58px);line-height:1.12;margin:14px 0 18px;letter-spacing:-1.5px}
+.lead{font-size:18px;color:var(--muted);max-width:580px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.hero-note{font-size:13px;color:var(--muted);margin-top:16px}
+.music-card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:28px;box-shadow:0 10px 28px rgba(60,45,25,.05)}
+.music-illustration{height:245px;border-radius:13px;background:var(--soft);display:grid;place-items:center;position:relative;overflow:hidden}
+.music-illustration .note{font-size:112px;color:var(--gold);line-height:1}
+.music-illustration .tag{position:absolute;bottom:15px;left:15px;background:white;border:1px solid var(--line);padding:7px 11px;border-radius:20px;font-size:12px;color:var(--muted)}
+.section{padding:58px 0}
+.section.alt{background:#f5efe5}
+.section-head{text-align:center;max-width:650px;margin:0 auto 30px}
+.section-head h2{font-size:32px;margin:7px 0}
+.section-head p{color:var(--muted);margin:0}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:13px;padding:22px}
+.card-icon{width:44px;height:44px;border-radius:10px;background:var(--soft);display:grid;place-items:center;font-size:22px;margin-bottom:14px}
+.card h3{margin:0 0 6px;font-size:18px}
+.card p{margin:0;color:var(--muted);font-size:14px}
+.feature-list{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
+.feature{background:var(--paper);border:1px solid var(--line);padding:17px;border-radius:11px;display:flex;gap:12px;align-items:flex-start}
+.check{width:25px;height:25px;flex:0 0 25px;border-radius:50%;background:#e9efe5;color:var(--green);display:grid;place-items:center;font-weight:bold}
+.feature strong{display:block;margin-bottom:2px}
+.feature span{font-size:13px;color:var(--muted)}
+.login-area{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:760px;margin:auto}
+.login-box{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:25px}
+.login-box h3{margin:0 0 8px}
+.login-box p{color:var(--muted);font-size:14px;margin:0 0 17px}
+footer{padding:27px 0;background:#302b25;color:#f8f2e8}
+footer .foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:13px;color:#d8cfc1}
+.modal{display:none;position:fixed;inset:0;background:rgba(35,29,22,.5);z-index:30;align-items:center;justify-content:center;padding:18px}
+.modal.show{display:flex}
+.modal-box{background:var(--paper);border-radius:15px;padding:25px;width:min(420px,100%);border:1px solid var(--line)}
+.modal-top{display:flex;justify-content:space-between;align-items:center}
+.close{border:0;background:var(--soft);border-radius:7px;padding:6px 10px;cursor:pointer}
+label{display:block;font-size:13px;font-weight:700;margin:13px 0 5px}
+input,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:8px;background:white;color:var(--ink)}
+.dashboard{display:none;padding:35px 0}
+.dashboard.show{display:block}
+.dash-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.dash-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.dash-item{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:18px}
+.dash-item strong{display:block;margin-bottom:5px}
+.dash-item span{font-size:13px;color:var(--muted)}
+.small-note{font-size:12px;color:var(--muted);margin-top:12px}
+@media(max-width:760px){
+ nav{display:none;position:absolute;top:72px;left:0;right:0;background:var(--paper);padding:18px 4%;border-bottom:1px solid var(--line);flex-direction:column;align-items:flex-start}
+ nav.open{display:flex}.menu-toggle{display:block}.nav>.btn{display:none}
+ .hero{padding:42px 0}.hero-grid{grid-template-columns:1fr;gap:25px}
+ .grid{grid-template-columns:1fr 1fr}.feature-list{grid-template-columns:1fr}
+ .login-area{grid-template-columns:1fr}.dash-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){.grid{grid-template-columns:1fr}.dash-grid{grid-template-columns:1fr}.music-illustration{height:190px}.section{padding:43px 0}}
+</style>
+</head>
+<body>
+<header>
+ <div class="wrap nav">
+  <a class="brand" href="#home"><span class="brand-mark">♫</span><span>YUG MUSICAL ACADEMY<small>LEARN • PRACTISE • PERFORM</small></span></a>
+  <nav id="navLinks"><a href="#home">Home</a><a href="#classes">Classes</a><a href="#learning">Student Corner</a><a href="#login">Login</a></nav>
+  <button class="menu-toggle" onclick="toggleMenu()">Menu ☰</button>
+  <a class="btn" href="#login">Login</a>
+ </div>
+</header>
+
+<main id="mainContent">
+<section class="hero" id="home">
+ <div class="wrap hero-grid">
+  <div>
+   <div class="eyebrow">Music for every age</div>
+   <h1>Find your rhythm.<br>Learn music with joy.</h1>
+   <p class="lead">A friendly place to learn an instrument, build confidence and enjoy music — whether you are a beginner or growing musician.</p>
+   <div class="hero-actions"><a class="btn" href="#classes">Explore Classes</a><a class="btn secondary" href="#login">Student Login</a></div>
+   <p class="hero-note">Simple lessons • Helpful teachers • Learn at your own pace</p>
+  </div>
+  <div class="music-card">
+   <div class="music-illustration"><span class="note">♫</span><span class="tag">Your music journey starts here</span></div>
+   <h3 style="margin:18px 0 4px">A welcoming learning space</h3>
+   <p style="margin:0;color:var(--muted);font-size:14px">Attend classes, practise with lesson videos and keep your learning material in one place.</p>
+  </div>
+ </div>
+</section>
+
+<section class="section" id="classes">
+ <div class="wrap">
+  <div class="section-head"><div class="eyebrow">Our classes</div><h2>Choose what you love</h2><p>Start with the instrument or skill that makes you excited to learn.</p></div>
+  <div class="grid">
+   <article class="card"><div class="card-icon">🎸</div><h3>Guitar</h3><p>Learn chords, strumming, songs and playing techniques step by step.</p></article>
+   <article class="card"><div class="card-icon">🎹</div><h3>Piano</h3><p>Build your keyboard skills, rhythm and musical understanding.</p></article>
+   <article class="card"><div class="card-icon">🎤</div><h3>Singing</h3><p>Practise voice, pitch, breathing and your favourite songs.</p></article>
+   <article class="card"><div class="card-icon">🎼</div><h3>Keyboard</h3><p>Understand notes, scales and melodies with guided practice.</p></article>
+   <article class="card"><div class="card-icon">🥁</div><h3>Drums</h3><p>Explore beats, timing and coordination from the basics.</p></article>
+   <article class="card"><div class="card-icon">♪</div><h3>Beginner Friendly</h3><p>No experience needed. Learn comfortably at your own pace.</p></article>
+  </div>
+ </div>
+</section>
+
+<section class="section alt" id="learning">
+ <div class="wrap">
+  <div class="section-head"><div class="eyebrow">Student corner</div><h2>Everything in one simple place</h2><p>Clear tools to help students stay organised and keep practising.</p></div>
+  <div class="feature-list">
+   <div class="feature"><div class="check">✓</div><div><strong>Class schedule</strong><span>Check your upcoming class dates and timings.</span></div></div>
+   <div class="feature"><div class="check">✓</div><div><strong>Recorded lesson videos</strong><span>Replay lessons and practise whenever you need.</span></div></div>
+   <div class="feature"><div class="check">✓</div><div><strong>PDF study material</strong><span>Read and download notes shared by the academy.</span></div></div>
+   <div class="feature"><div class="check">✓</div><div><strong>Attendance</strong><span>See your class attendance in your account.</span></div></div>
+   <div class="feature"><div class="check">✓</div><div><strong>Notifications</strong><span>Get updates about classes and new learning material.</span></div></div>
+   <div class="feature"><div class="check">✓</div><div><strong>Practice submissions</strong><span>Share practice recordings and receive feedback.</span></div></div>
+   <div class="feature"><div class="check">✓</div><div><strong>Assignments & quizzes</strong><span>Review what you have learnt with short activities.</span></div></div>
+   <div class="feature"><div class="check">✓</div><div><strong>Live online classes</strong><span>Join online group sessions. Capacity depends on the live-class service used.</span></div></div>
+  </div>
+ </div>
+</section>
+
+<section class="section" id="login">
+ <div class="wrap">
+  <div class="section-head"><div class="eyebrow">Welcome back</div><h2>Choose your login</h2><p>Students and academy administrators have separate access.</p></div>
+  <div class="login-area">
+   <div class="login-box"><div class="card-icon">🎵</div><h3>Student Login</h3><p>Open your schedule, lessons, notes and attendance.</p><button class="btn" onclick="openLogin('Student')">Login as Student</button></div>
+   <div class="login-box"><div class="card-icon">⚙️</div><h3>Admin Login</h3><p>Manage student information, classes and academy updates.</p><button class="btn secondary" onclick="openLogin('Admin')">Login as Admin</button></div>
+  </div>
+ </div>
+</section>
+</main>
+
+<section class="dashboard wrap" id="dashboard">
+ <div class="dash-top"><div><div class="eyebrow" id="dashRole">Student Area</div><h2 style="margin:4px 0">Welcome to your dashboard</h2></div><button class="btn secondary" onclick="logout()">Log out</button></div>
+ <div class="dash-grid" id="dashTiles">
+  <div class="dash-item"><strong>📅 Class Schedule</strong><span>Your upcoming lessons will appear here.</span></div>
+  <div class="dash-item"><strong>▶ Lesson Videos</strong><span>Recorded practice lessons.</span></div>
+  <div class="dash-item"><strong>📄 Study PDFs</strong><span>Notes and learning material.</span></div>
+  <div class="dash-item"><strong>✓ Attendance</strong><span>View your attendance record.</span></div>
+  <div class="dash-item"><strong>🔔 Notifications</strong><span>Academy announcements and updates.</span></div>
+  <div class="dash-item"><strong>🎙 Practice Upload</strong><span>Submit your practice recording.</span></div>
+ </div>
+ <p class="small-note">Demo preview: account features need a secure backend to store real student data and files.</p>
+</section>
+
+<footer><div class="wrap foot"><span>© 2026 YUG Musical Academy</span><span>Learn music at your own pace.</span></div></footer>
+
+<div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+ <div class="modal-box">
+  <div class="modal-top"><h3 id="modalTitle">Login</h3><button class="close" onclick="closeLogin()" aria-label="Close">✕</button></div>
+  <p style="color:var(--muted);font-size:14px;margin:0">Enter demo details to preview the dashboard.</p>
+  <form onsubmit="demoLogin(event)">
+   <label for="email">Email</label><input id="email" type="email" placeholder="you@example.com" required>
+   <label for="password">Password</label><input id="password" type="password" placeholder="Enter password" required>
+   <button class="btn" style="width:100%;margin-top:18px" type="submit">Continue</button>
+  </form>
+  <p class="small-note">Demo only — real login and account security are not connected yet.</p>
+ </div>
+</div>
+<script>
+let selectedRole='Student';
+function toggleMenu(){document.getElementById('navLinks').classList.toggle('open')}
+function openLogin(role){selectedRole=role;document.getElementById('modalTitle').textContent=role+' Login';document.getElementById('loginModal').classList.add('show')}
+function closeLogin(){document.getElementById('loginModal').classList.remove('show')}
+function demoLogin(e){
+ e.preventDefault();closeLogin();
+ document.getElementById('mainContent').style.display='none';
+ const dash=document.getElementById('dashboard');dash.classList.add('show');
+ document.getElementById('dashRole').textContent=selectedRole+' Area';
+ if(selectedRole==='Admin'){
+  document.getElementById('dashTiles').innerHTML=
+  '<div class="dash-item"><strong>👥 Students</strong><span>Manage student records.</span></div>'+
+  '<div class="dash-item"><strong>📅 Class Schedule</strong><span>Organise class timings.</span></div>'+
+  '<div class="dash-item"><strong>📄 Learning Material</strong><span>Share PDFs and lesson videos.</span></div>'+
+  '<div class="dash-item"><strong>✓ Attendance</strong><span>Review student attendance.</span></div>'+
+  '<div class="dash-item"><strong>🔔 Notifications</strong><span>Post academy announcements.</span></div>'+
+  '<div class="dash-item"><strong>🎙 Practice Feedback</strong><span>Review student practice submissions.</span></div>';
+ }else{
+  document.getElementById('dashTiles').innerHTML=
+  '<div class="dash-item"><strong>📅 Class Schedule</strong><span>Your upcoming lessons will appear here.</span></div>'+
+  '<div class="dash-item"><strong>▶ Lesson Videos</strong><span>Recorded practice lessons.</span></div>'+
+  '<div class="dash-item"><strong>📄 Study PDFs</strong><span>Notes and learning material.</span></div>'+
+  '<div class="dash-item"><strong>✓ Attendance</strong><span>View your attendance record.</span></div>'+
+  '<div class="dash-item"><strong>🔔 Notifications</strong><span>Academy announcements and updates.</span></div>'+
+  '<div class="dash-item"><strong>🎙 Practice Upload</strong><span>Submit your practice recording.</span></div>';
+ }
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function logout(){document.getElementById('dashboard').classList.remove('show');document.getElementById('mainContent').style.display='block';window.scrollTo({top:0,behavior:'smooth'})}
+document.getElementById('loginModal').addEventListener('click',e=>{if(e.target.id==='loginModal')closeLogin()});
+</script>
+</body>
+</html>

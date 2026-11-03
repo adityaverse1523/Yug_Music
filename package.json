@@ -1,0 +1,18 @@
+{
+  "name": "yug-musical-academy",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:admin": "npm run dev --workspace=@yug/admin",
+    "build:admin": "npm run build --workspace=@yug/admin",
+    "preview:admin": "npm run preview --workspace=@yug/admin",
+    "dev:mobile": "npm run dev --workspace=@yug/mobile",
+    "build:mobile": "npm run build --workspace=@yug/mobile",
+    "preview:mobile": "npm run preview --workspace=@yug/mobile"
+  }
+}
+

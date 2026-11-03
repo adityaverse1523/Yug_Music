@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cream: #fbf7ef;
+  --paper: #fffdf9;
+  --ink: #302b25;
+  --muted: #746d63;
+  --gold: #b58a4b;
+  --gold-dark: #8c6836;
+  --line: #e9e0d2;
+  --soft: #f3ecdf;
+  --green: #64745b;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: none;
+}
+
+/* Custom discreet scrollbar for mobile lists */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-thumb {
+  background: #e9e0d2;
+  border-radius: 4px;
+}
+
