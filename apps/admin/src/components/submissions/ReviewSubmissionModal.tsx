@@ -80,10 +80,21 @@ export const ReviewSubmissionModal: React.FC<ReviewSubmissionModalProps> = ({
                 <Volume2 className="w-3.5 h-3.5 text-gold-dark" />
                 Practice Recording Playback:
               </label>
-              <audio controls className="w-full h-10 rounded-lg">
-                <source src={submission.audio_video_url} type="audio/mpeg" />
-                Your browser does not support audio element.
-              </audio>
+              {submission.audio_video_url.startsWith('blob:') ? (
+                <div className="p-2.5 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 text-[11px] flex items-center gap-1.5">
+                  <span>⚠️</span>
+                  <span>Old local browser recording. Please ask student to re-record for cloud sync.</span>
+                </div>
+              ) : (
+                <audio
+                  controls
+                  src={submission.audio_video_url}
+                  preload="metadata"
+                  className="w-full h-10 rounded-lg"
+                >
+                  Your browser does not support audio element.
+                </audio>
+              )}
             </div>
           </div>
 

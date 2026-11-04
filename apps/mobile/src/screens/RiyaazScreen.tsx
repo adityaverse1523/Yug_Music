@@ -95,7 +95,19 @@ export const RiyaazScreen: React.FC = () => {
                     <Volume2 className="w-3 h-3" />
                     <span>My Audio Recording:</span>
                   </div>
-                  <audio controls src={sub.audio_video_url} className="w-full h-8 rounded" />
+                  {sub.audio_video_url.startsWith('blob:') ? (
+                    <div className="p-2 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 text-[11px] flex items-center gap-1.5">
+                      <span>⚠️</span>
+                      <span>Old local device recording. Please record again to sync with Sir.</span>
+                    </div>
+                  ) : (
+                    <audio
+                      controls
+                      src={sub.audio_video_url}
+                      preload="metadata"
+                      className="w-full h-8 rounded"
+                    />
+                  )}
                 </div>
 
                 {/* Teacher's Review status */}

@@ -116,10 +116,21 @@ export const SubmissionsPage: React.FC = () => {
                     <Volume2 className="w-3.5 h-3.5" />
                     <span>Practice Recording Track:</span>
                   </div>
-                  <audio controls className="w-full h-9 rounded">
-                    <source src={sub.audio_video_url} type="audio/mpeg" />
-                    Audio playback not supported.
-                  </audio>
+                  {sub.audio_video_url.startsWith('blob:') ? (
+                    <div className="p-2 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 text-[11px] flex items-center gap-1.5">
+                      <span>⚠️</span>
+                      <span>Old local browser recording. Please ask student to re-record for cloud sync.</span>
+                    </div>
+                  ) : (
+                    <audio
+                      controls
+                      src={sub.audio_video_url}
+                      preload="metadata"
+                      className="w-full h-9 rounded"
+                    >
+                      Audio playback not supported.
+                    </audio>
+                  )}
                 </div>
 
                 {/* If already reviewed: display feedback & stars */}

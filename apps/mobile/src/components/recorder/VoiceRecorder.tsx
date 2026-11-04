@@ -1,11 +1,29 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Mic, Square, Play, RotateCcw, Send, CheckCircle2, Volume2, Sparkles } from 'lucide-react';
+import { Mic, Square, Play, RotateCcw, Send, CheckCircle2, Volume2, Sparkles, Loader2 } from 'lucide-react';
 import { ACADEMY_CONFIG, sanitizeText } from '@yug/shared';
 import { useStudentData } from '../../context/StudentContext';
+import fixWebmDuration from 'fix-webm-duration';
 
 interface VoiceRecorderProps {
   onSubmitted: () => void;
 }
+
+const getSupportedAudioMimeType = (): string => {
+  if (typeof window === 'undefined' || typeof MediaRecorder === 'undefined') return '';
+  const candidates = [
+    'audio/webm;codecs=opus',
+    'audio/webm',
+    'audio/mp4',
+    'audio/aac',
+    'audio/ogg;codecs=opus',
+  ];
+  for (const candidate of candidates) {
+    if (MediaRecorder.isTypeSupported(candidate)) {
+      return candidate;
+    }
+  }
+  return '';
+};
 
 export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onSubmitted }) => {
   const { currentStudent, submitPractice } = useStudentData();
@@ -13,6 +31,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onSubmitted }) => 
   const [isRecording, setIsRecording] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [isProcessingAudio, setIsProcessingAudio] = useState(false);
   const [title, setTitle] = useState('');
   const [notes, setNotes] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -21,34 +40,79 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onSubmitted }) => 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const timerRef = useRef<any>(null);
+  const startTimeRef = useRef<number>(0);
 
   useEffect(() => {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
+      if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+        mediaRecorderRef.current.stop();
+      }
     };
   }, []);
 
   const startRecording = async () => {
     try {
       audioChunksRef.current = [];
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mediaRecorder = new MediaRecorder(stream);
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+        },
+      });
+
+      const preferredMime = getSupportedAudioMimeType();
+      const options: MediaRecorderOptions = {
+        audioBitsPerSecond: 64000,
+      };
+      if (preferredMime) {
+        options.mimeType = preferredMime;
+      }
+
+      const mediaRecorder = new MediaRecorder(stream, options);
       mediaRecorderRef.current = mediaRecorder;
 
       mediaRecorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
+        if (event.data && event.data.size > 0) {
           audioChunksRef.current.push(event.data);
         }
       };
 
-      mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-        const url = URL.createObjectURL(audioBlob);
-        setAudioUrl(url);
+      mediaRecorder.onstop = async () => {
+        setIsProcessingAudio(true);
+        const durationMs = Math.max(1000, Date.now() - startTimeRef.current);
+        const actualMime = mediaRecorder.mimeType || preferredMime || 'audio/webm';
+        let rawBlob = new Blob(audioChunksRef.current, { type: actualMime });
+
+        let finalBlob = rawBlob;
+        // Fix WebM duration metadata (solves Chrome 0-second / unseekable duration bug)
+        if (actualMime.includes('webm')) {
+          try {
+            finalBlob = await fixWebmDuration(rawBlob, durationMs);
+          } catch (err) {
+            console.warn('Could not inject duration header into WebM, using raw blob:', err);
+          }
+        }
+
+        // Convert blob to persistent Base64 Data URL for cross-device, cross-origin playback
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const base64Url = reader.result as string;
+          setAudioUrl(base64Url);
+          setIsProcessingAudio(false);
+        };
+        reader.onerror = (err) => {
+          console.error('Failed to convert recorded audio to Data URL:', err);
+          setIsProcessingAudio(false);
+        };
+        reader.readAsDataURL(finalBlob);
+
         stream.getTracks().forEach((track) => track.stop());
       };
 
-      mediaRecorder.start();
+      startTimeRef.current = Date.now();
+      mediaRecorder.start(1000);
       setIsRecording(true);
       setRecordingTime(0);
 
@@ -87,7 +151,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onSubmitted }) => 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!audioUrl || !title.trim()) return;
+    if (!audioUrl || !title.trim() || isProcessingAudio) return;
 
     setIsSubmitting(true);
     try {
@@ -164,19 +228,33 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onSubmitted }) => 
                 {formatTime(recordingTime)}
               </span>
               <p className="text-[11px] text-muted font-medium mt-0.5">
-                {isRecording ? 'Recording your riyaaz... Tap to finish' : audioUrl ? 'Recording ready!' : 'Tap mic to start recording'}
+                {isRecording
+                  ? 'Recording your riyaaz... Tap to finish'
+                  : isProcessingAudio
+                  ? 'Processing audio track...'
+                  : audioUrl
+                  ? 'Recording ready!'
+                  : 'Tap mic to start recording'}
               </p>
             </div>
           </div>
 
+          {/* Processing Spinner */}
+          {isProcessingAudio && (
+            <div className="flex items-center justify-center gap-2 py-4 text-xs font-bold text-muted animate-in fade-in">
+              <Loader2 className="w-4 h-4 animate-spin text-gold" />
+              <span>Finalizing audio track...</span>
+            </div>
+          )}
+
           {/* Audio Review & Form */}
-          {audioUrl && !isRecording && (
+          {audioUrl && !isRecording && !isProcessingAudio && (
             <form onSubmit={handleSubmit} className="space-y-3 pt-3 border-t border-line animate-in fade-in">
               <div>
                 <label className="block text-[11px] font-bold text-muted uppercase tracking-wider mb-1 flex items-center gap-1">
                   <Volume2 className="w-3.5 h-3.5 text-gold-dark" /> Listen Before Submitting:
                 </label>
-                <audio controls src={audioUrl} className="w-full h-10 rounded-lg" />
+                <audio controls src={audioUrl} preload="metadata" className="w-full h-10 rounded-lg" />
               </div>
 
               <div>
