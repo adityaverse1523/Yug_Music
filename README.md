@@ -1,5 +1,7 @@
 # ♫ YUG Musical Academy — Monorepo Platform
 
+Production deployment ready for Vercel & PWA Mobile App.
+
 Complete digital ecosystem for **YUG Musical Academy**, featuring:
 1. **Teacher & Admin Web Panel** (`apps/admin`): For the Music Professor to schedule classes, dispatch student mobile notifications, track attendance, upload study materials, and review practice recordings.
 2. **Student Mobile App** (`apps/mobile`): Cross-platform mobile app (React Native / Expo) for students.
