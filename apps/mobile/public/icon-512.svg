@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad512" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#302b25" />
+      <stop offset="100%" stop-color="#1e1b18" />
+    </linearGradient>
+    <linearGradient id="goldGrad512" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f0ddb0" />
+      <stop offset="50%" stop-color="#b58a4b" />
+      <stop offset="100%" stop-color="#8c6836" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad512)" />
+  <circle cx="256" cy="256" r="202" fill="none" stroke="url(#goldGrad512)" stroke-width="8" stroke-dasharray="8 6" opacity="0.7" />
+  <circle cx="256" cy="256" r="176" fill="#fbf7ef" />
+  
+  <!-- Classical Musical Note & Harp Motif -->
+  <g transform="translate(256, 256) scale(2.4) translate(-96, -96)">
+    <path d="M76 112 A14 14 0 1 1 62 98 A14 14 0 0 1 76 112 Z" fill="url(#goldGrad512)" />
+    <path d="M130 102 A14 14 0 1 1 116 88 A14 14 0 0 1 130 102 Z" fill="url(#goldGrad512)" />
+    <rect x="73" y="52" width="6" height="60" rx="3" fill="url(#goldGrad512)" />
+    <rect x="127" y="42" width="6" height="60" rx="3" fill="url(#goldGrad512)" />
+    <polygon points="73,52 133,42 133,56 73,66" fill="url(#goldGrad512)" />
+    <circle cx="96" cy="138" r="3" fill="url(#goldGrad512)" />
+  </g>
+</svg>
+

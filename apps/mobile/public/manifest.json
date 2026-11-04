@@ -1,0 +1,58 @@
+{
+  "name": "YUG Musical Academy",
+  "short_name": "YUG Music",
+  "description": "Classical Discipline • Acoustic Soul • Pure Riyaaz",
+  "start_url": "/",
+  "id": "/",
+  "display": "standalone",
+  "background_color": "#fbf7ef",
+  "theme_color": "#b58a4b",
+  "orientation": "portrait-primary",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["education", "music", "lifestyle"],
+  "icons": [
+    {
+      "src": "/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Record Riyaaz",
+      "short_name": "Riyaaz",
+      "description": "Record and submit daily music practice",
+      "url": "/?tab=riyaaz",
+      "icons": [{ "src": "/icon-192.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Class Timetable",
+      "short_name": "Classes",
+      "description": "View live classes and schedule",
+      "url": "/?tab=classes",
+      "icons": [{ "src": "/icon-192.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Study Library",
+      "short_name": "Library",
+      "description": "Access sheet music, notes and audio lessons",
+      "url": "/?tab=library",
+      "icons": [{ "src": "/icon-192.svg", "sizes": "192x192" }]
+    }
+  ]
+}
+

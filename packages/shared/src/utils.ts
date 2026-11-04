@@ -35,3 +35,4 @@ export function sanitizeText(input?: string | null): string {
     .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
     .trim();
 }
+

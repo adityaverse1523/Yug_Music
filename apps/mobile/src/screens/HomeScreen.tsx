@@ -14,6 +14,7 @@ import {
 import { useStudentData } from '../context/StudentContext';
 import { MobileTab } from '../components/layout/BottomNav';
 import { sanitizeExternalUrl, ACADEMY_CONFIG } from '@yug/shared';
+import { PwaInstallBanner } from '../components/pwa/PwaInstallBanner';
 
 interface HomeScreenProps {
   onNavigateTab: (tab: MobileTab) => void;
@@ -41,6 +42,9 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 
   return (
     <div className="space-y-4 pb-20">
+      {/* PWA Install Promotion Banner */}
+      <PwaInstallBanner />
+
       {/* Student Welcome Header Card */}
       <div className="bg-paper border border-line rounded-2xl p-4 shadow-xs">
         <div className="flex items-center justify-between">

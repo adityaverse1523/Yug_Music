@@ -1,6 +1,7 @@
 import React from 'react';
 import { User, CheckCircle2, Clock, Mail, Phone, Calendar, Award, ShieldCheck, LogOut } from 'lucide-react';
 import { useStudentData } from '../context/StudentContext';
+import { PwaInstallBanner } from '../components/pwa/PwaInstallBanner';
 
 export const ProfileScreen: React.FC = () => {
   const { currentStudent, myAttendance, logout } = useStudentData();
@@ -98,6 +99,9 @@ export const ProfileScreen: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* PWA App Installation Option */}
+      <PwaInstallBanner />
 
       {/* Sign Out / Switch Account */}
       <div className="pt-2">
